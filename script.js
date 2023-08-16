@@ -39,9 +39,18 @@ const ac = document.getElementById('reset');
     listButtons[i].addEventListener("click", function () {
       operateurPresse = false;
       const element = listButtons[i].textContent.trim();
+      const lab = document.getElementById("calcul");
+      
+      if(lab.innerHTML.includes("=")){
+        console.log(lab.innerHTML);
+        inputAffichager.value = element;
+        labelHistoryque.innerHTML = "";
+        numeroCourant = element;
+        return;
+      }
 
       if (numeroCourant === "0") {
-        numeroCourant = element;
+        numeroCourant = element
       } else {
         numeroCourant += element;
       }
@@ -74,14 +83,15 @@ const ac = document.getElementById('reset');
 
   c.addEventListener("click", function (event) {
     event.preventDefault();
-    numeroCourant = "";
-    operateurCourant = "";
-    calculEnCours = "";
-    inputAffichager.value = 0;
-    // if (numeroCourant.length > 0) {
-    //   numeroCourant = numeroCourant.slice(0, -1)
-    //   inputAffichager.value = numeroCourant;
-    // }
+    // numeroCourant = "";
+    // operateurCourant = "";
+    // calculEnCours = "";
+    // inputAffichager.value = 0;
+
+    if (numeroCourant.length > 0) {
+      numeroCourant = numeroCourant.slice(0, -10)
+      inputAffichager.value = 0;
+    }
   });
 
   ac.addEventListener("click", function (event) {
@@ -144,7 +154,7 @@ const ac = document.getElementById('reset');
     event.preventDefault();
     if (numeroCourant !== "" && operateurCourant !== "") {
       calculEnCours += numeroCourant;
-      labelHistoryque.textContent = calculEnCours + " =";
+      labelHistoryque.textContent = calculEnCours + " = ";
       let resultat;
 
       switch (operateurCourant) {
@@ -157,7 +167,7 @@ const ac = document.getElementById('reset');
             if (numeroCourant !== "0") {
               resultat = eval(calculEnCours);
             } else {
-              inputAffichager.value = "Division par 0 est impossible";
+              inputAffichager.value = "Error";
               labelHistoryque.textContent = "";
               return;
             }
@@ -165,6 +175,7 @@ const ac = document.getElementById('reset');
           break;
         default:
           break;
+          
       }
 
       if (typeof resultat !== "undefined") {
@@ -172,6 +183,7 @@ const ac = document.getElementById('reset');
         numeroCourant = resultat.toString();
         operateurCourant = "";
         calculEnCours = "";
+        
       }
     }
   });
